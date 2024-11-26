@@ -107,7 +107,8 @@ const Form = () => {
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
-      validationSchema={isLogin ? LoginSchema : registerSchema}>
+      validationSchema={isLogin ? LoginSchema : registerSchema}
+    >
       {({
         values,
         errors,
@@ -126,14 +127,15 @@ const Form = () => {
               gridTemplateColumns="repeat(4, minmax(0, 1fr))"
               sx={{
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-              }}>
-              {isRegister && (
+              }}
+            >
+              {isRegister ? (
                 <>
                   <TextField
                     label="First Name"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.firstName}
+                    value={values.firstName || ""}
                     name="firstName"
                     error={
                       Boolean(touched.firstName) && Boolean(errors.firstName)
@@ -148,7 +150,7 @@ const Form = () => {
                     label="Last Name"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.lastName}
+                    value={values.lastName || ""}
                     name="lastName"
                     error={
                       Boolean(touched.lastName) && Boolean(errors.lastName)
@@ -160,7 +162,7 @@ const Form = () => {
                     label="Location"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.location}
+                    value={values.location || ""}
                     name="location"
                     error={
                       Boolean(touched.location) && Boolean(errors.location)
@@ -172,7 +174,7 @@ const Form = () => {
                     label="Occupation"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.occupation}
+                    value={values.occupation || ""}
                     name="occupation"
                     error={
                       Boolean(touched.occupation) && Boolean(errors.occupation)
@@ -185,19 +187,22 @@ const Form = () => {
                     gridColumn={"span 4"}
                     border={`1px solid ${palette.neutral.medium} `}
                     borderRadius={"5px"}
-                    p={"1rem"}>
+                    p={"1rem"}
+                  >
                     <Dropzone
                       acceptedFiles=".jpg,.jpeg,.png"
                       multiple={false}
                       onDrop={(acceptedFiles) =>
                         setFieldValue("picture", acceptedFiles[0])
-                      }>
+                      }
+                    >
                       {({ getRootProps, getInputProps }) => (
                         <Box
                           {...getRootProps()}
                           border={`2px dashed ${palette.primary.main}`}
                           p="1rem"
-                          sx={{ "&:hover": { cursor: "pointer" } }}>
+                          sx={{ "&:hover": { cursor: "pointer" } }}
+                        >
                           <input {...getInputProps()} />
                           {!values.picture ? (
                             <p>Add Picture Here</p>
@@ -211,30 +216,57 @@ const Form = () => {
                       )}
                     </Dropzone>
                   </Box>
+                  <TextField
+                    label="Email"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.email || ""}
+                    name="email"
+                    error={Boolean(touched.email) && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                    sx={{ gridColumn: "span 4" }}
+                  />
+                  <TextField
+                    label="Password"
+                    type="password"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.password}
+                    name="password"
+                    error={
+                      Boolean(touched.password) && Boolean(errors.password)
+                    }
+                    helperText={touched.password && errors.password}
+                    sx={{ gridColumn: "span 4" }}
+                  />
+                </>
+              ) : (
+                <>
+                  <TextField
+                    label="Email"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.email}
+                    name="email"
+                    error={Boolean(touched.email) && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                    sx={{ gridColumn: "span 4" }}
+                  />
+                  <TextField
+                    label="Password"
+                    type="password"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.password}
+                    name="password"
+                    error={
+                      Boolean(touched.password) && Boolean(errors.password)
+                    }
+                    helperText={touched.password && errors.password}
+                    sx={{ gridColumn: "span 4" }}
+                  />
                 </>
               )}
-
-              <TextField
-                label="Email"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={Boolean(touched.email) && Boolean(errors.email)}
-                helperText={touched.email && errors.email}
-                sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                label="Password"
-                type="password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.password}
-                name="password"
-                error={Boolean(touched.password) && Boolean(errors.password)}
-                helperText={touched.password && errors.password}
-                sx={{ gridColumn: "span 4" }}
-              />
             </Box>
 
             <Box>
@@ -247,7 +279,8 @@ const Form = () => {
                   backgroundColor: palette.primary.main,
                   color: palette.background.alt,
                   "&:hover": { color: palette.primary.main },
-                }}>
+                }}
+              >
                 {isLogin ? "LOGIN" : "REGISTER"}
               </Button>
               <Typography
@@ -262,7 +295,8 @@ const Form = () => {
                     cursor: "pointer",
                     color: palette.primary.light,
                   },
-                }}>
+                }}
+              >
                 {isLogin
                   ? "Don't have an account? Sign Up here."
                   : "Already have an account? Login here."}
